@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>slncky by jjennychen</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>slncky</h1>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>Software</h1>
+		  This page will teach you how to:
+		  <ul>
+		  	<li><a href="#step-1-download-slncky-and-all-dependencies">Download</a> slncky</li>
+			<li><a href="#step-2-configure-annotations">Configure annotations</a> for slncky</li>
+			<li><a href="#step-3-run-slncky">Run</a> slncky</li>
+			<li>Understand slncky's <a href="#output">output</a></li>
+	    </ul>
+		<br>
+		  <h2>
+<a name="step-1-download-slncky-and-all-dependencies" class="anchor" href="#step-1-download-slncky-and-all-dependencies"><span class="octicon octicon-link"></span></a>Step 1: Download slncky and all dependencies</h2>
+
+<p>Download slncky from its <a href="https://github.com/jjennychen/slncky">github</a>.</p>
+
+<p>slncky was developed using Python v2.7.1 and will not work with Python v3.  To check what version of python you have, type <code>python --version</code> into your terminal.</p>
+
+<p>slncky is depending on three easily downloadable softwares:</p>
+
+<ul>
+<li><a href="https://code.google.com/p/bedtools/downloads/list">bedtools v2.17.0 or greater</a></li>
+<li><a href="http://hgdownload.cse.ucsc.edu/admin/exe/">liftOver</a></li>
+<li><a href="http://www.bx.psu.edu/%7Ersharris/lastz/">lastz</a></li>
+</ul><p>You must have all three software downloaded and available in your PATH.  If you cannot add them to your path, you can specify the path by using the flags --bedtools_path, --liftover_path, and --lastz_path.  </p>
+
+<h2>
+<a name="step-2-configure-annotations" class="anchor" href="#step-2-configure-annotations"><span class="octicon octicon-link"></span></a>Step 2: Configure annotations</h2>
+
+<p>We need several annotation files in order to filter for lncRNAs and discover orthologs.  For your convenience, you can download all the necessary annotations here:</p>
+<li><p><a href="https://www.dropbox.com/s/v69vkciik9tgd6z/annotations.tar.gz?dl=0">annotations.tar.gz (2GB)</a></p></li>
+
+<p>Download the annotations.tar.gz file into the same directory as the ./slncky.v2.0 executable and un-tarball it (<code>tar -xzvf annotations.tar.gz</code>). By default, <i>slncky</i> will use these annotations and the annotations.config file in this directory. If you wish to run everything with default parameters, skip to step 3.  If you want to use your own annotations or adjust the annotation parameters, read below.</p>
+
+<p>What are the annotations <i>slncky</i> uses and why?</p>
+
+<ul>
+<li><p>Any transcripts that overlap a CODING or MAPPED_CODING gene more than --min_overlap (default = 0%) in either drection are removed. </p></li>
+<li><p>Next, the remaining transcripts are aligned against each other using the GENOME_FA file to search for clusters of gene duplications.  Clusters larger than --min_cluster_size (default = 2) are removed. </p></li>
+<li><p>Finally, the remaining transcripts are liftOver-ed to the ortholog genome and aligned to coding genes in the syntenic genomic region and any transcripts that align "significantly" to a syntenic coding gene are removed.  By default, <i>slncky</i> learns a significance threshold by aligning coding-overlapping transcripts (from step one) to syntenic coding genes.  You may also specify your own --coding_blast_min. 
+<br>
+For this step to work, you must also specify an ORTHOLOG and LIFTOVER file, as well as CODING and GENOME_FA files for both species.  GENOME_FA and LIFTOVER files can be downloaded from <a href="http://hgdownload.soe.ucsc.edu/downloads.html">UCSC</a>.</p></li>
+<li><p>Finally, we have a set of bona-fide long non-coding genes and <i>slncky</i> searches for their NONCODING orthologs in the ORTHOLOG genome. Any number of NONCODING transcripts may be specified and <i>slncky</i> will report all possible ortholog pairs.  </p></li>
+</ul><p>If you would like to use your own annotation files, you must specify the path in the annotations.config file.  Make sure all annotations are preceded by species specifier (e.g. &gt;mm9). Prepending a '#' to any line comments out that annotation.  For example, we have commented out annotations for UCSC's "near coding" genes, but if you wish to have a stricter lncRNA filter, you may delete the '#' to un-comment out this line. </p>
+
+<h2>
+<a name="step-3-run-slncky" class="anchor" href="#step-3-run-slncky"><span class="octicon octicon-link"></span></a>Step 3: Run slncky!</h2>
+
+<p>Phew the hard part is over.  Now you just have to run <i>slncky</i>.  By default <i>slncky</i> runs both the filtering and ortholog searching step, but you can customize that with either the --no_filter or --no_orth_search flag.</p>
+
+<p>Usage:
+./slncky.v2.0 bedfile assembly out_prefix</p>
+
+<p>Examples:</p>
+
+<p>barebones:</p>
+
+<p><code>./slncky.v2.0 transcripts.bed mm9 out</code></p>
+
+<p>don't filter, just search for orthologs:</p>
+
+<p><code>./slncky.v1.0 --no_filter transcripts.bed mm9 out</code></p>
+
+<p>by default, slncky uses the annotations.config file in the same directory as itself, but you can set this path if you want:</p>
+
+<p><code>./slncky.v1.0 --config ./annotations.config transcripts.bed mm9 out</code></p>
+
+<p>if bedtools is not in your path:</p>
+
+<p><code>./slncky.v1.0 --bedtools_path /unix/home/jjenny/bedtools-2.17.0/bin transcripts.bed mm9 out</code></p>
+
+<h2>
+<a name="output" class="anchor" href="#output"><span class="octicon octicon-link"></span></a>Output</h2>
+
+<p>slncky will produce several output files:</p>
+<code>out.lncs.bed</code>
+<br>Bed12 file of high-confidence long, non-coding RNAs
+<p><br><code>out.filtered_info.txt</code> / <code>out.cluster_info.txt</code>
+<br>filter_info contains a list of every filtered out transcripts with the reason for filtering. cluster_info contains names of transcripts found in duplication clusters</p>
+<p><code>out.canonical_to_lncs.txt</code>
+<br>A table of the canonical transcripts chosen from groups over overlapping transcripts.</p>
+<p><code>out.orthologs.txt</code> / <code>out.orthologs.top.txt</code>
+<br>A list of every ortholog pair, with additional information about the alignment. The out.orthologs.top.txt file contains only the best alignment (based on exonic identity) for each lncRNA.</p>
+<p><code>out.orfs.txt</code>
+<br>A list of alignments which contain ORFs longer than 30bp, along with additional information about the ORF alignment.</p> 
+<p><code>out_html/</code>
+<br>This directory contains a website to help you visualize which transcripts were filtered and why.  To view the website, open <code>out_html/index.html</code> with your Firefox browser. The website will not work properly with Chrome.</p>
+<p><code>out_alignments.tar.gz</code>
+<br>A tarred file of all ortholog alignments to load into our <a href="http://zlab.umassmed.edu/~zhux3/maf/input_tar.html">Compare Browser</a> for visualization.
+
+        </section>
+        <aside id="sidebar">
+			<p><a href="index.html">About</a>
+			<p><a href="index.html">Paper</a>
+			<p>Software
+			<p><a href="http://zlab.umassmed.edu/~zhux3/maf/input_tar.html">Compare Browser</a>
+			<p><a href="http://zlab.umassmed.edu/~zhux3/maf/">Pluripotent lncRNA Compare Browser</a>
+        </aside>
+
+      </div>
+    </div>
+
+  
+  </body>
+</html>
