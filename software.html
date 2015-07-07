@@ -54,7 +54,7 @@
 <a name="step-2-configure-annotations" class="anchor" href="#step-2-configure-annotations"><span class="octicon octicon-link"></span></a>Step 2: Configure annotations</h2>
 
 <p>We need several annotation files in order to filter for lncRNAs and discover orthologs.  For your convenience, you can download all the necessary annotations here:</p>
-<li><p><a href="https://www.dropbox.com/s/v69vkciik9tgd6z/annotations.tar.gz?dl=0">annotations.tar.gz (2GB)</a></p></li>
+<li><p><a href="https://www.dropbox.com/s/n85fg09aghmzzqn/annotations.tar.gz?dl=0">annotations.tar.gz (2GB)</a></p></li>
 
 <p>Download the annotations.tar.gz file into the same directory as the ./slncky.v2.0 executable and un-tarball it (<code>tar -xzvf annotations.tar.gz</code>). By default, <i>slncky</i> will use these annotations and the annotations.config file in this directory. If you wish to run everything with default parameters, skip to step 3.  If you want to use your own annotations or adjust the annotation parameters, read below.</p>
 
@@ -85,11 +85,11 @@ For this step to work, you must also specify an ORTHOLOG and LIFTOVER file, as w
 
 <p>don't filter, just search for orthologs:</p>
 
-<p><code>./slncky.v1.0 --no_filter transcripts.bed mm9 out</code></p>
+<p><code>./slncky.v1.0 -2 transcripts.bed mm9 out</code></p>
 
 <p>by default, slncky uses the annotations.config file in the same directory as itself, but you can set this path if you want:</p>
 
-<p><code>./slncky.v1.0 --config ./annotations.config transcripts.bed mm9 out</code></p>
+<p><code>./slncky.v1.0 -c ./annotations.config transcripts.bed mm9 out</code></p>
 
 <p>if bedtools is not in your path:</p>
 
