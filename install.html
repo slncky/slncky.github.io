@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>slncky: a tool for lncRNA discovery<</title>
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.min.css">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid" style="position: absolute; width: 100%;">
+        <div class="navbar-header">
+          <a class ="navbar-brand" href="index.html"><p style="font-size:26"><em>slncky</em> : a tool for lncRNA discovery</p></a>
+        </div >
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+          <ul class="nav navbar-nav">
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a href="#">Installation</a></li>
+            <li><a href="usage.html">Usage</a></li>
+            <li><a href="cite.html">Cite</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="jumbotron">
+        <h2>Installation</h2>
+        <hr>
+          This page will teach you how to:
+          <ul>
+            <li><a href="#step-1-download-slncky-and-all-dependencies">Download</a> <em>slncky</em></li>
+            <li><a href="#step-2-configure-annotations">Configure annotations</a> for <em>slncky</em></li>
+          </ul>
+          <br>
+          <h4>
+          <a name="step-1-download-slncky-and-all-dependencies" class="anchor" href="#step-1-download-slncky-and-all-dependencies">
+          <span class="octicon octicon-link"></span></a>Step 1: Download slncky and all dependencies</h4>
+          <hr>
+          Download <em>slncky</em> from its <a href="https://github.com/slncky/slncky" target="_blank">github</a>.
+          <br>
+          <br>
+          
+          <span class="label label-info">Note</span>  <em>slncky</em> was developed using Python v2.7.1 and will not work with Python v3.  To check what version of python you have, type <code>python --version</code> into your terminal.
+          <br>
+          <br>
+          <em>slncky</em> is depending on three easily downloadable softwares:
+          <ul>
+            <li><a href="https://code.google.com/p/bedtools/downloads/list" target="_blank">bedtools v2.17.0 or greater</a></li>
+            <li><a href="http://hgdownload.cse.ucsc.edu/admin/exe/" target="_blank">liftOver</a></li>
+            <li><a href="http://www.bx.psu.edu/%7Ersharris/lastz/" target="_blank">lastz</a></li>
+          </ul>
+          <br>You must have all three software downloaded and available in your PATH.  If you cannot add them to your path, you can specify the path by using the flags <code>--bedtools_path</code>, <code>--liftover_path</code>, and <code>--lastz_path</code>.
+          <br>
+          <br>
+          <br>
+          <h4>
+          <a name="step-2-configure-annotations" class="anchor" href="#step-2-configure-annotations">
+          <span class="octicon octicon-link"></span></a>Step 2: Configure annotations</h4>
+          <hr>
+          We need several annotation files in order to filter for lncRNAs and discover orthologs.  For your convenience, you can download all the necessary annotations here:
+          <ul><li><a href="https://www.dropbox.com/s/n85fg09aghmzzqn/annotations.tar.gz?dl=0">annotations.tar.gz (2GB)</a></li></ul>
+          <br>
+          Download the <code>annotations.tar.gz</code> file into the same directory as the <code>./slncky.v2.0</code> executable and un-tarball it (<code>tar -xzvf annotations.tar.gz</code>). By default, <i>slncky</i> will use these annotations and the annotations.config file in this directory. If you wish to run everything with default parameters, skip to the <a href="usage.html">Usage</a> page.  If you want to use your own annotations or adjust the annotation parameters, read below.
+
+          <br>
+          <br>
+          <b>What are the annotations <i>slncky</i> uses and why?</b>
+
+          <ul>
+          <li>Any transcript that overlaps a <b>CODING</b> or <b>MAPPED_CODING</b> gene more than <code>--min_overlap</code> (default = 0%) is removed.</li>
+          <li>Next, the remaining transcripts are aligned against each other to search for clusters of gene duplications.  Clusters equal to or larger than <code>--min_cluster</code> (default = 2) are removed. The <b>GENOME_FA</b> file is needed for this step.</li>
+          <li>If you have a sequence file for commonly duplicated genes that you would like to align transcripts to and remove, you may also supply one or more <b>DUPS</b> files.
+          <li>The remaining transcripts are aligned to syntenic coding genes and any transcripts that align significantly are removed.  By default, <i>slncky</i> learns a significance threshold from the data, but you may also specify your own using the <code>--min_coding</code> parameter.  This step requires an <b>ORTHOLOG</b> and <b>LIFTOVER</b> file, a <b>CODING</b> file for the ortholog species, and <b>GENOME_FA</b> files for both species.  Annotation files can be downloaded from <a href="http://hgdownload.soe.ucsc.edu/downloads.html" target="_blank">UCSC</a>.</li>
+          <li>Finally, we have a set of bona-fide long noncoding genes.  Now, <i>slncky</i> searches for their <b>NONCODING</b> orthologs in the <b>ORTHOLOG</b> genome. <b>GENOME_FA</b> files must be supplied for both species.</li>
+          </ul>
+
+          <br>If you would like to use your own annotation files, specify the full path in the <code>annotations.config</code> file.  Precede list of annotations for a given species by species specifier (e.g. &gt;mm9). Prepending a '#' to any line comments out that annotation.  For example, we have commented out annotations for UCSC's "near coding" genes, but if you wish to have a stricter lncRNA filter, you may un-comment out this line. </p>
