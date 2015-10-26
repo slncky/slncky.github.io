@@ -47,12 +47,14 @@
         <br>barebones:
         <br><code>./slncky.v2.0 transcripts.bed mm9 out</code>
         <br><br>don't filter, just search for orthologs:
-        <br><code>./slncky.v1.0 -2 transcripts.bed mm9 out</code>
+        <br><code>./slncky.v2.0 -2 transcripts.bed mm9 out</code>.
+        <br><br>create <a href="http://scripts.mit.edu/~jjenny/main.html" target="_blank">evolutionary browser</a> to view lncRNA orthologs:
+        <br><code>./slncky.v2.0 -w transcripts.bed mm9 out</code>
         <br><br>by default, <em>slncky</em> uses the <code>annotations.config</code> file in the same directory as itself, but you can set this path if you want:
-        <br><code>./slncky.v1.0 -c ./annotations.config transcripts.bed mm9 out</code>
+        <br><code>./slncky.v2.0 -c ./annotations.config transcripts.bed mm9 out</code>
 
         <br><br>if bedtools is not in your path:
-        <br><code>./slncky.v1.0 --bedtools_path /unix/home/jjenny/bedtools-2.17.0/bin transcripts.bed mm9 out</code>
+        <br><code>./slncky.v2.0 --bedtools_path /unix/home/jjenny/bedtools-2.17.0/bin transcripts.bed mm9 out</code>
 </div></div>
 
         <a name="customize" class="anchor" href="#customize"><span class="octicon octicon-link"></span></a>
@@ -109,8 +111,9 @@
 <br><br><code>out.orthologs.txt</code> / <code>out.orthologs.top.txt</code>
 <br>A list of every ortholog pair, with additional information about the alignment. The out.orthologs.top.txt file contains only the best alignment (based on exonic identity) for each lncRNA.
 <br><br><code>out.orfs.txt</code>
-<br>A list of alignments which contain ORFs longer than 30bp, along with additional information about the ORF alignment.</p> 
-
+<br>A list of alignments which contain ORFs longer than 30bp, along with additional information about the ORF alignment.
+<br><br><code>out_browser/</code>
+<br>If the <code>--web</code> flag was set, <em>slncky</em> will create an evolutionary browser that is viewable from <code>out_browser/browse.html</code></p> 
 
 
       </div>
