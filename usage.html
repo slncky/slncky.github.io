@@ -40,21 +40,21 @@
         <h4>
         <a name="step-3-run-slncky" class="anchor" href="#step-3-run-slncky"><span class="octicon octicon-link"></span></a>Run <em>slncky</em> !</h4>
         <hr>
-        <p>Usage: <code>./slncky.v2.0 bedfile assembly out_prefix</code></p>
+        <p>Usage: <code>./slncky.v1.0 bedfile assembly out_prefix</code></p>
         <div class="panel panel-default">
   <div class="panel-body">
         <h5>Examples</h5>
         <br>barebones:
-        <br><code>./slncky.v2.0 transcripts.bed mm9 out</code>
+        <br><code>./slncky.v1.0 transcripts.bed mm9 out</code>
         <br><br>don't filter, just search for orthologs:
-        <br><code>./slncky.v2.0 -2 transcripts.bed mm9 out</code>.
+        <br><code>./slncky.v1.0 -2 transcripts.bed mm9 out</code>.
         <br><br>create an <a href="http://scripts.mit.edu/~jjenny/main.html" target="_blank">evolutionary browser</a> to view lncRNA orthologs:
-        <br><code>./slncky.v2.0 -w transcripts.bed mm9 out</code>
+        <br><code>./slncky.v1.0 -w transcripts.bed mm9 out</code>
         <br><br>by default, <em>slncky</em> uses the <code>annotations.config</code> file in the same directory as itself, but you can set this path if you want:
-        <br><code>./slncky.v2.0 -c ./annotations.config transcripts.bed mm9 out</code>
+        <br><code>./slncky.v1.0 -c ./annotations.config transcripts.bed mm9 out</code>
 
         <br><br>if bedtools is not in your path:
-        <br><code>./slncky.v2.0 --bedtools_path /unix/home/jjenny/bedtools-2.17.0/bin transcripts.bed mm9 out</code>
+        <br><code>./slncky.v1.0 --bedtools_path /unix/home/jjenny/bedtools-2.17.0/bin transcripts.bed mm9 out</code>
 </div></div>
 
         <a name="customize" class="anchor" href="#customize"><span class="octicon octicon-link"></span></a>
@@ -91,7 +91,7 @@
         <tr><td colspan="2"><h6>Advanced orthology search options</h6></td></tr>
         <tr><td><code>--minMatch</td><td>minMatch parameter to pass to <em>liftOver</em>.  Decreasing this parameter will increase sensitivity of orthology search. (Default: 0.1)</td></tr>
         <tr><td><code>--pad</td><td>Number of basepairs up- and downstream of lncRNA loci to include in orthology search. Increasing this parameter will increase sensitivity of orthology search. (Default: 50,000)</td></tr>
-        <tr><td><code>--gap_open</td><td>Gap open penalty to pass to <em>lastz</em>. Decreasing this parameter will increase sensitivity of orthology search. (Default: 200)</td></tr>
+        <tr><td><code>--gap_open</td><td>Gap open penalty to pass to <em>lastz</em>. Decreasing this parameter will increase sensitivity of orthology search. (Default: 1.0)</td></tr>
         <tr><td><code>--gap_extend</td><td>Gap extend penalty to pass to <em>lastz</em>. Decreasing this parameter will increase sensitivity of orthology search. (Default: 40)</td></tr>
         <tr><td></td><td></td></tr>
        </tbody>
